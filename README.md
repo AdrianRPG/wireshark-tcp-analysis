@@ -62,6 +62,12 @@ gaia.cs.umass.edu
 128.119.245.12:80
 ```
 
+### Packet-Level Endpoint Verification
+
+![TCP network endpoints](screenshots/01-network-endpoints.png)
+
+*Wireshark inspection of the HTTP POST connection showing the client `192.168.86.68:55639` communicating with `gaia.cs.umass.edu` at `128.119.245.12:80`.*
+
 ---
 
 ## TCP Three-Way Handshake
@@ -80,6 +86,11 @@ Client                                  Server
       ACK
       ---------------------------------->
 ```
+### Handshake Capture
+
+![TCP three-way handshake](screenshots/02-tcp-handshake.png)
+
+*Initial TCP connection establishment showing the SYN, SYN-ACK, and ACK exchange between the client and server.*
 
 ### Client SYN
 
@@ -168,6 +179,12 @@ P  O  S  T
 ```
 
 This directly verified that packet 4 contained the beginning of the HTTP POST request.
+
+### Raw Payload Verification
+
+![HTTP POST TCP payload](screenshots/03-http-post-payload.png)
+
+*Inspection of the first data-carrying TCP segment. The hexadecimal bytes `50 4f 53 54` correspond to the ASCII string `POST`, confirming the beginning of the HTTP request directly within the TCP payload.*
 
 ---
 
@@ -309,6 +326,12 @@ Initial server acknowledgments advertised:
 | `4345` | `295` | `128` | `37,760 bytes` |
 | `5793` | `317` | `128` | `40,576 bytes` |
 
+### Receiver-Advertised Window
+
+![TCP receiver advertised window](screenshots/04-receiver-window.png)
+
+*Wireshark TCP header analysis showing a raw Window Size Value of `249`, a Window Scaling Factor of `128`, and an effective advertised receive window of `31,872 bytes`.*
+
 The smallest observed raw window value was:
 
 ```text
@@ -382,6 +405,12 @@ Wireshark's TCP conversation statistics reported approximately:
 
 for the complete client-to-server conversation interval.
 
+### TCP Conversation Statistics
+
+![TCP conversation statistics](screenshots/05-tcp-conversation-statistics.png)
+
+*Wireshark TCP conversation statistics for the client-server session, including packet counts, transferred bytes, connection duration, and directional throughput.*
+
 A separate application-data calculation used:
 
 ```text
@@ -444,6 +473,12 @@ During slow start, acknowledgments allow the congestion window to increase quick
 
 The spacing between these packet fleets was also approximately related to the connection's RTT.
 
+### Time-Sequence Analysis
+
+![TCP Time-Sequence Graph](screenshots/06-time-sequence-slow-start.png)
+
+*Wireshark Time-Sequence Graph (Stevens) for the client-to-server direction. Increasing groups of transmitted TCP segments during the early transfer illustrate behavior consistent with TCP Slow Start.*
+
 ---
 
 ## Key Findings
@@ -491,17 +526,6 @@ This project demonstrates practical experience with:
 - Network troubleshooting methodology
 
 ---
-
-## Repository Structure
-
-```text
-wireshark-tcp-analysis/
-├── README.md
-└── notes/
-    └── observations.md
-```
-
-Additional packet-analysis screenshots and visual evidence will be added to the repository separately.
 
 For more detailed measurements and technical notes, see:
 
